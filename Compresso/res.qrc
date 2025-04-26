@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/house-solid.svg</file>
+        <file>icons/file-import-solid.svg</file>
+        <file>icons/file-zipper-solid.svg</file>
+        <file>icons/maximize-solid.svg</file>
+        <file>icons/minimize-solid.svg</file>
+    </qresource>
+</RCC>

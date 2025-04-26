@@ -17,6 +17,21 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_compressbtn_clicked();
+
+    void on_pushButton_9_clicked();
+
+    void on_decompressbtn_clicked();
+
+    void on_homeBtn_2_clicked();
+
+    void on_homeBtn_clicked();
+
+    void on_fileBtn_2_clicked();
+
+    void on_fileBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
