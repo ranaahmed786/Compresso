@@ -18,7 +18,7 @@ class HuffmenTree
 
     Node*root;
     //private wrapper for code generation recursively
-    void generateCodes(Node* node,string currCode,unordered_map<unsigned char,string> codes);
+    void generateCodes(Node* node,string currCode,unordered_map<unsigned char,string> &codes);
 
 public:
     HuffmenTree();

@@ -48,7 +48,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="homeTab">
      <widget class="QLabel" name="label">
@@ -170,7 +170,7 @@
        </iconset>
       </property>
      </widget>
-     <widget class="QProgressBar" name="progressBar">
+     <widget class="QProgressBar" name="cProgressbar">
       <property name="geometry">
        <rect>
         <x>130</x>
@@ -285,7 +285,7 @@
        </iconset>
       </property>
      </widget>
-     <widget class="QProgressBar" name="progressBar_3">
+     <widget class="QProgressBar" name="dCompressbar">
       <property name="geometry">
        <rect>
         <x>130</x>

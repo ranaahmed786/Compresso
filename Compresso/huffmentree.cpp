@@ -16,15 +16,13 @@ void HuffmenTree::makeTree(const unordered_map<unsigned char, int>& freqMap) {
     while (pq.size() > 1) {
         Node* left = pq.top(); pq.pop();
         Node* right = pq.top(); pq.pop();
-
         Node* parent = new Node(left, right);
         pq.push(parent);
     }
-
     root = pq.top();
 }
 
-void HuffmenTree::generateCodes(Node* node,string currCode,unordered_map<unsigned char,string> codes){
+void HuffmenTree::generateCodes(Node* node,string currCode,unordered_map<unsigned char,string> &codes){
     if(node==nullptr) return;
     else if (node->left==nullptr&&node->right==nullptr){
         codes[node->data]=currCode;

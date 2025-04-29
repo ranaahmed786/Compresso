@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include"compressor.h"
 #include <QFileDialog>
 #include<QString>
 MainWindow::MainWindow(QWidget *parent)
@@ -9,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle(" Compresso ");
     setWindowIcon(QIcon());
+    ui->cProgressbar->hide();
 }
 
 MainWindow::~MainWindow()
@@ -57,5 +59,10 @@ void MainWindow::on_fileBtn_clicked()
 {
     QString path=QFileDialog::getOpenFileName(this,"Select file for Compression","","All Files(*.*)");
     ui->filePathbox->setText(path);
+    string Path = path.toStdString();
+
+    Compressor c(Path);
+    c.compressFile();
+
 }
 
