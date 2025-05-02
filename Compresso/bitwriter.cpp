@@ -1,5 +1,5 @@
 #include "bitwriter.h"
-BitWriter::BitWriter(ofstream &outputStream): out(outputStream), buffer(0), bitCount(0) {}
+BitWriter::BitWriter(ofstream& outputStream) : out(outputStream), buffer(0), bitCount(0) {}
 
 BitWriter::~BitWriter() {
     flush(); // Auto-flush remaining bits when BitWriter goes out of scope
@@ -18,7 +18,7 @@ void BitWriter::writeBit(bool bit) {
     }
 }
 
-void BitWriter::writeBits(const string &bits) {
+void BitWriter::writeBits(const string& bits) {
     for (char bitChar : bits) {
         writeBit(bitChar == '1');
     }

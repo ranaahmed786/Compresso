@@ -4,14 +4,14 @@
 using namespace std;
 class BitWriter
 {
-    ofstream &out;
+    ofstream& out;
     unsigned char buffer;
     int bitCount;
-public:
-    BitWriter(ofstream &outputStream);
-    ~BitWriter();
     void writeBit(bool bit);
-    void writeBits(const std::string &bits);
+public:
+    BitWriter(ofstream& outputStream);
+    ~BitWriter();
+    void writeBits(const std::string& bits);
     void flush();
 };
 #endif // BITWRITER_H

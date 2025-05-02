@@ -1,8 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
-
+#include "ui_mainwindow.h"
+#include"compressor.h"
+#include <QFileDialog>
+#include<QMessageBox>
+#include<QString>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -31,6 +34,8 @@ private slots:
     void on_fileBtn_2_clicked();
 
     void on_fileBtn_clicked();
+
+    void on_CompressFileBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

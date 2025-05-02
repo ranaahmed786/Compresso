@@ -12,18 +12,20 @@ SOURCES += \
     bitwriter.cpp \
     compressor.cpp \
     decompressor.cpp \
-    filehandler.cpp \
-    huffmentree.cpp \
+    huffmantree.cpp \
+    infilehandler.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    outfilehandler.cpp
 
 HEADERS += \
     bitwriter.h \
     compressor.h \
     decompressor.h \
-    filehandler.h \
-    huffmentree.h \
-    mainwindow.h
+    huffmantree.h \
+    infilehandler.h \
+    mainwindow.h \
+    outfilehandler.h
 
 FORMS += \
     mainwindow.ui

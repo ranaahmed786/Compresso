@@ -1,16 +1,27 @@
 #ifndef COMPRESSOR_H
 #define COMPRESSOR_H
-#include"filehandler.h"
-#include"huffmentree.h"
+#include"infilehandler.h"
+#include "outfilehandler.h"
+#include "huffmantree.h"
+#include <vector>
+#include <stdint.h>
+#include<unordered_map>
+#include<filesystem>
+using namespace std;
+namespace fs = std::filesystem;
 class Compressor
 {
-    FileHandler file;
+    InFileHandler inHandler;
+    OutFileHandler outHandler;
     HuffmenTree tree;
-
+    fs::path rootFolder;
+    fs::path compressedFolder;
+    size_t originalFSize;
+    size_t compressedFSize;
+    void compressFile(const string& filePath, const string& relativefilePath);
 public:
-    Compressor(const string & path);
-    void compressFile();
-    void saveFileAs();
+    Compressor(const string& path);
+    void compressFolder();
 
 };
 

@@ -1,8 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include"compressor.h"
-#include <QFileDialog>
-#include<QString>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -11,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle(" Compresso ");
     setWindowIcon(QIcon());
     ui->cProgressbar->hide();
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow()
@@ -50,19 +47,34 @@ void MainWindow::on_homeBtn_clicked()
 
 void MainWindow::on_fileBtn_2_clicked()
 {
-    QString path=QFileDialog::getOpenFileName(this,"Select file for Compression","","All Files(*.*)");
+    QString path=QFileDialog::getOpenFileName(this,"Select file for Deompression","","All Files(*.*)");
     ui->filePathbox_2->setText(path);
 }
 
 
 void MainWindow::on_fileBtn_clicked()
 {
-    QString path=QFileDialog::getOpenFileName(this,"Select file for Compression","","All Files(*.*)");
-    ui->filePathbox->setText(path);
-    string Path = path.toStdString();
+    QString path=QFileDialog::getExistingDirectory(this,"Select folder to compress","",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
+        ui->filePathbox->setText(path);
+}
 
-    Compressor c(Path);
-    c.compressFile();
+
+void MainWindow::on_CompressFileBtn_clicked()
+{
+    try{
+        string path=ui->filePathbox->text().toStdString();
+        if(path==""){
+            throw runtime_error("Kindly select a valid folder for compression");
+        }
+        else{
+            Compressor c(path);
+            c.compressFolder();
+            QMessageBox::information(this,"success","compression done successfully");
+        }
+    }
+    catch(const exception&e){
+        QMessageBox::critical(this,"An error occured during compression",e.what());
+    }
 
 }
 
