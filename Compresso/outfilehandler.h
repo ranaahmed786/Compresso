@@ -8,6 +8,7 @@
 #include "bitwriter.h"
 #include <cstdint>
 #include <string>
+#include<filesystem>
 
 class OutFileHandler {
     std::string outFilePath;
@@ -20,7 +21,6 @@ public:
                       std::vector<std::pair<unsigned char, int>>& lenghts,
                       std::unordered_map<unsigned char, std::string>& codes);
     void setPath(const std::string& path);
-    size_t getSize();
 };
 
 #endif // OUTFILEHANDLER_H

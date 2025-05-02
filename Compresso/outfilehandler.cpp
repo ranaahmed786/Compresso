@@ -1,24 +1,14 @@
 // outfilehandler.cpp
 #include "outfilehandler.h"
 
-OutFileHandler::OutFileHandler() : fileSize(0) {}
+OutFileHandler::OutFileHandler() {}
 
 OutFileHandler::OutFileHandler(const std::string& path)
-    : outFilePath(path + ".cmp"), fileSize(0) {}
+    : outFilePath(path + ".cmp") {}
 
-size_t OutFileHandler::getSize() {
-    std::ifstream inFile(outFilePath, ios::binary | ios::ate);
-    if (!inFile) {
-        return 0; // File doesn't exist yet
-    }
-    fileSize = inFile.tellg();
-    inFile.close();
-    return fileSize;
-}
 
 void OutFileHandler::setPath(const std::string& path) {
     outFilePath = path + ".cmp";
-    fileSize = 0;
 }
 
 void OutFileHandler::writeCmpFile(const std::vector<unsigned char>& orgBytes,

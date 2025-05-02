@@ -6,11 +6,17 @@
 #include <vector>
 #include <stdint.h>
 #include<unordered_map>
+#include<QElapsedTimer>
 #include<filesystem>
+#include<QObject>
 using namespace std;
 namespace fs = std::filesystem;
-class Compressor
+class Compressor:public QObject
 {
+    Q_OBJECT
+    friend class MainWindow;
+    qint64 TimeTaken;
+    int FilesProcessed;
     InFileHandler inHandler;
     OutFileHandler outHandler;
     HuffmenTree tree;
@@ -22,7 +28,8 @@ class Compressor
 public:
     Compressor(const string& path);
     void compressFolder();
-
+signals:
+    void progressUpdated(int value);
 };
 
 #endif // COMPRESSOR_H
