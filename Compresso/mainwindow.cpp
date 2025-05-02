@@ -7,8 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("Compresso");
-    //ui->stackedWidget->setCurrentIndex(0);
-    ui->stackedWidget->setCurrentWidget(ui->CompStatsTab);
+    ui->stackedWidget->setCurrentIndex(0);
     ui->progressBar->hide();
 
     // Connect compression watcher finished signal
