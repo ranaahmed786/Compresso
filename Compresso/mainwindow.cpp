@@ -46,7 +46,7 @@ void MainWindow::on_fileBtn_2_clicked() {
 
 void MainWindow::on_fileBtn_clicked() {
     QString path = QFileDialog::getExistingDirectory(this, "Select folder to compress", "",
-                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     ui->filePathbox->setText(path);
 }
 
@@ -79,6 +79,13 @@ void MainWindow::on_CompressFileBtn_clicked() {
         ui->progressBar->hide();
     }
 }
+QString MainWindow::formatSize(double bytes) {
+    if (bytes < 1.0) { // Less than 1 MB
+        double sizeKB = bytes * 1024.0;
+        return QString::number(sizeKB, 'f', 2) + " KBs";
+    }
+    return QString::number(bytes, 'f', 2) + " MBs";
+}
 
 // Modified compression finished handler
 void MainWindow::compressionFinished() {
@@ -89,19 +96,29 @@ void MainWindow::compressionFinished() {
     ui->CompressFileBtn->show();
     // Update stats
     Compressor &c = *currentCompressor;
-    lastCompressedPath = QString::fromStdString(c.compressedFolder.parent_path().string());
+    lastCompressedPath = QString::fromStdString(c.compressedFolder.string());
 
-    double sizeOMB = static_cast<double>(c.originalFSize) / (1024.0 * 1024.0);
-    ui->orgFileSizeD->setText(QString::number(sizeOMB, 'f', 2) + " MBs");
+    // Update dashboard with proper size formatting
+        // Convert sizes to MB first
+        double sizeOMB = static_cast<double>(c.originalFSize) / (1024.0 * 1024.0);
+        double sizeCMB = static_cast<double>(c.compressedFSize) / (1024.0 * 1024.0);
 
-    double sizeCMB = static_cast<double>(c.compressedFSize) / (1024.0 * 1024.0);
-    ui->cmpFileSizeD->setText(QString::number(sizeCMB, 'f', 2) + " MBs");
+        // Original Size (auto-format)
+        ui->orgFileSizeD->setText(formatSize(sizeOMB));
 
-    ui->filesProcessed->setText(QString::number(c.FilesProcessed));
-    ui->cmpRatioD->setText(QString::number((sizeCMB / sizeOMB) * 100, 'f', 1) + " %");
-    ui->timeTakenD->setText(QString::number(static_cast<double>(c.TimeTaken) / 1000.0, 'f', 2) + " s");
-    ui->spaceSavedD->setText(QString::number(sizeOMB - sizeCMB, 'f', 2) + " MBs");
+        // Compressed Size (auto-format)
+        ui->cmpFileSizeD->setText(formatSize(sizeCMB));
 
+        // Other metrics
+        ui->filesProcessed->setText(QString::number(c.FilesProcessed));
+
+        // Handle division by zero for ratio calculation
+        double ratio = (sizeOMB > 0) ? (1 - (sizeCMB / sizeOMB)) * 100 : 0.0;
+        ui->cmpRatioD->setText(QString::number(ratio, 'f', 1) + " %");
+
+        // Time and space saved
+        ui->timeTakenD->setText(QString::number(static_cast<double>(c.TimeTaken) / 1000.0, 'f', 2) + " s");
+        ui->spaceSavedD->setText(formatSize(sizeOMB - sizeCMB));
     // Show success message and switch to stats page
     QMessageBox::information(this, "Success", "Compression done successfully!");
     ui->stackedWidget->setCurrentWidget(ui->CompStatsTab);

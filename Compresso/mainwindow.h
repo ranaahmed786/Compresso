@@ -40,7 +40,7 @@ private slots:
 
     // NEW: progress update slot
     void updateProgress(int value);
-
+    QString formatSize(double bytes);
     // NEW: completion slot
     void compressionFinished();
 
