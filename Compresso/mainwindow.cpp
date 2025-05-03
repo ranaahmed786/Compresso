@@ -131,10 +131,13 @@ void MainWindow::updateProgress(int value)
     ui->progressBar->setValue(value);
     QCoreApplication::processEvents(); // Optional: Keeps UI responsive
 }
-void MainWindow::on_pushButton_clicked() {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(lastCompressedPath));
-}
 
 void MainWindow::on_homeBtnS_clicked() {
     ui->stackedWidget->setCurrentWidget(ui->homeTab);
 }
+
+void MainWindow::on_showInFolderBtn_clicked()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(lastCompressedPath));
+}
+

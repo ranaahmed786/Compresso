@@ -35,14 +35,13 @@ private slots:
     void on_fileBtn_2_clicked();
     void on_fileBtn_clicked();
     void on_CompressFileBtn_clicked();
-    void on_pushButton_clicked();
     void on_homeBtnS_clicked();
-
     // NEW: progress update slot
     void updateProgress(int value);
     QString formatSize(double bytes);
     // NEW: completion slot
     void compressionFinished();
+    void on_showInFolderBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
