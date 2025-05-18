@@ -62,23 +62,28 @@ void HuffmenTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLe
     };
     sort(codeLenghts.begin(), codeLenghts.end(), Comparator);
     codes.clear();
-    int currentCode = 0;  // Start at 0
-    int currentLength = 0; // Track the current code length
-    for (const auto& entry : codeLenghts) {
-        unsigned char symbol = entry.first;
-        int length = entry.second;  // Desired code length
-        // Handle length increase
-        if (length > currentLength) {
-            currentCode <<= (length - currentLength);  // Pad with zeros
-            currentLength = length;
-        }
-        // Convert currentCode to binary string of 'length' bits
-        string canonicalCode;
-        for (int i = length - 1; i >= 0; i--) {  // MSB to LSB
-            canonicalCode.push_back((currentCode & (1 << i)) ? '1' : '0');
-        }
-        codes[symbol] = canonicalCode;
-        currentCode++;  // Prepare for next symbol
-    }
+    this->getHuffCanonicalCodes(codeLenghts,codes,true);
 }
-
+void HuffmenTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes ,bool codesLengthsSorted){
+    if(codesLengthsSorted){
+        int currentCode = 0;  // Start at 0
+        int currentLength = 0; // Track the current code length
+        for (const auto& entry : codeLenghts) {
+            unsigned char symbol = entry.first;
+            int length = entry.second;  // Desired code length
+            // Handle length increase
+            if (length > currentLength) {
+                currentCode <<= (length - currentLength);  // Pad with zeros
+                currentLength = length;
+            }
+            // Convert currentCode to binary string of 'length' bits
+            string canonicalCode;
+            for (int i = length - 1; i >= 0; i--) {  // MSB to LSB
+                canonicalCode.push_back((currentCode & (1 << i)) ? '1' : '0');
+            }
+            codes[symbol] = canonicalCode;
+            currentCode++;
+        }
+    }
+        else return;
+}

@@ -28,6 +28,7 @@ public:
     void makeTree(const unordered_map<unsigned char, int>& info);
     void getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes);
     void getHuffCodes(unordered_map<unsigned char, string>& codes);
+    void getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes ,bool codesLengthsSorted);
 };
 
 #endif // HUFFMANTREE_H

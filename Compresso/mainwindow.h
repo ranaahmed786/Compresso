@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include "ui_mainwindow.h"
 #include "compressor.h"
+#include "decompressor.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QString>
@@ -32,24 +33,30 @@ private slots:
     void on_decompressbtn_clicked();
     void on_homeBtn_2_clicked();
     void on_homeBtn_clicked();
-    void on_fileBtn_2_clicked();
-    void on_fileBtn_clicked();
+    void on_folderBtn_2_clicked();
+    void on_folderBtn_clicked();
     void on_CompressFileBtn_clicked();
     void on_homeBtnS_clicked();
-    // NEW: progress update slot
-    void updateProgress(int value);
+    void updateCmpProgress(int value);
+    void updateDecmpProgress(int value);
     QString formatSize(double bytes);
-    // NEW: completion slot
     void compressionFinished();
+    void decompressionFinished();
     void on_showInFolderBtn_clicked();
+    void on_DecompressFileBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
     QString lastCompressedPath;
-
-    // NEW: objects for threading and watching
+    QString lastDecompressedPath;
+    //objects for threading and watching of compression;
     QFutureWatcher<void> compressionWatcher;
     Compressor *currentCompressor = nullptr;
+    //objects for threding and watching of decompression
+    QFutureWatcher<void> decompressionWatcher;
+    Decompressor *currentDecompressor =nullptr;
+
+
 };
 
 #endif // MAINWINDOW_H

@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Compresso");
     ui->stackedWidget->setCurrentIndex(0);
     ui->progressBar->hide();
+    ui->dCompressbar->hide();
 
     // Connect compression watcher finished signal
     connect(&compressionWatcher, &QFutureWatcher<void>::finished,
@@ -39,15 +40,22 @@ void MainWindow::on_homeBtn_clicked() {
     ui->stackedWidget->setCurrentWidget(ui->homeTab);
 }
 
-void MainWindow::on_fileBtn_2_clicked() {
-    QString path = QFileDialog::getOpenFileName(this, "Select file for Decompression", "", "All Files(*.*)");
+void MainWindow::on_folderBtn_2_clicked() {
+    QString path = QFileDialog::getExistingDirectory(this, "Select folder for Decompression", "",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     ui->filePathbox_2->setText(path);
 }
 
-void MainWindow::on_fileBtn_clicked() {
+void MainWindow::on_folderBtn_clicked() {
     QString path = QFileDialog::getExistingDirectory(this, "Select folder to compress", "",
                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     ui->filePathbox->setText(path);
+}
+QString MainWindow::formatSize(double bytes) {
+    if (bytes < 1.0) { // Less than 1 MB
+        double sizeKB = bytes * 1024.0;
+        return QString::number(sizeKB, 'f', 2) + " KBs";
+    }
+    return QString::number(bytes, 'f', 2) + " MBs";
 }
 
 void MainWindow::on_CompressFileBtn_clicked() {
@@ -67,7 +75,7 @@ void MainWindow::on_CompressFileBtn_clicked() {
 
         // Connect progress signal
         connect(currentCompressor, &Compressor::progressUpdated,
-                this, &MainWindow::updateProgress, Qt::QueuedConnection);
+                this, &MainWindow::updateCmpProgress, Qt::QueuedConnection);
 
         // Run in background
         compressionWatcher.setFuture(QtConcurrent::run([this]() {
@@ -79,14 +87,6 @@ void MainWindow::on_CompressFileBtn_clicked() {
         ui->progressBar->hide();
     }
 }
-QString MainWindow::formatSize(double bytes) {
-    if (bytes < 1.0) { // Less than 1 MB
-        double sizeKB = bytes * 1024.0;
-        return QString::number(sizeKB, 'f', 2) + " KBs";
-    }
-    return QString::number(bytes, 'f', 2) + " MBs";
-}
-
 // Modified compression finished handler
 void MainWindow::compressionFinished() {
     if (!currentCompressor) return;
@@ -121,17 +121,21 @@ void MainWindow::compressionFinished() {
         ui->spaceSavedD->setText(formatSize(sizeOMB - sizeCMB));
     // Show success message and switch to stats page
     QMessageBox::information(this, "Success", "Compression done successfully!");
-    ui->stackedWidget->setCurrentWidget(ui->CompStatsTab);
+    ui->stackedWidget->setCurrentWidget(ui->StatsTab);
 
     delete currentCompressor;
     currentCompressor = nullptr;
 }
-void MainWindow::updateProgress(int value)
+void MainWindow::updateCmpProgress(int value)
 {
     ui->progressBar->setValue(value);
     QCoreApplication::processEvents(); // Optional: Keeps UI responsive
 }
 
+void MainWindow::updateDecmpProgress(int value){
+    ui->dCompressbar->setValue(value);
+    QCoreApplication::processEvents();
+}
 void MainWindow::on_homeBtnS_clicked() {
     ui->stackedWidget->setCurrentWidget(ui->homeTab);
 }
@@ -141,3 +145,74 @@ void MainWindow::on_showInFolderBtn_clicked()
     QDesktopServices::openUrl(QUrl::fromLocalFile(lastCompressedPath));
 }
 
+
+void MainWindow::on_DecompressFileBtn_clicked()
+{
+    try {
+        QString Path = ui->filePathbox_2->text();
+        if (Path.isEmpty()) {
+            throw std::runtime_error("Kindly select a valid folder for compression");
+        }
+
+        // Show progress bar and reset
+        ui->DecompressFileBtn->hide();
+        ui->dCompressbar->show();
+        ui->dCompressbar->setValue(0);
+
+        // Prepare decompressor
+        currentDecompressor = new Decompressor(Path.toStdString());
+
+        // Connect progress signal
+        connect(currentDecompressor, &Decompressor::progressUpdated,
+                this, &MainWindow::updateDecmpProgress, Qt::QueuedConnection);
+
+        // Run in background
+        decompressionWatcher.setFuture(QtConcurrent::run ([this](){
+            currentDecompressor->decompressFolder();
+        }));
+
+    } catch (const std::exception &e) {
+        QMessageBox::critical(this, "An error occurred during decompression", e.what());
+        ui->progressBar->hide();
+    }
+}
+void MainWindow::decompressionFinished() {
+    if (!currentDecompressor) return;
+
+    // Hide progress bar
+    ui->dCompressbar->hide();
+    ui->DecompressFileBtn->show();
+    ui->StatsHeader->setText("Decompression Summary");
+    // Update stats
+    Decompressor &d = *currentDecompressor;
+    lastDecompressedPath = QString::fromStdString(d.decompressedFolderP.string());
+
+    // Update dashboard with proper size formatting
+    // Convert sizes to MB first
+    double sizeOMB = static_cast<double>(d.originalFSize) / (1024.0 * 1024.0);
+    double sizeCMB = static_cast<double>(d.compressedFSize) / (1024.0 * 1024.0);
+
+    // Original Size (auto-format)
+    ui->orgFileSizeD->setText(formatSize(sizeOMB));
+
+    // Compressed Size (auto-format)
+    ui->cmpFileSizeD->setText(formatSize(sizeCMB));
+
+
+    ui->filesProcessed->setText(QString::number(d.FilesProcessed));
+
+    // Handle division by zero for ratio calculation
+    double ratio = (sizeOMB > 0) ? (1 - (sizeCMB / sizeOMB)) * 100 : 0.0;
+    ui->cmpRatioD->setText(QString::number(ratio, 'f', 1) + " %");
+
+    // Time and space saved
+    ui->timeTakenD->setText(QString::number(static_cast<double>(d.TimeTaken) / 1000.0, 'f', 2) + " s");
+    ui->spaceSavedD->setText(formatSize(sizeOMB - sizeCMB));
+    ui->spaceLabel->setText("Space Released");
+    // Show success message and switch to stats page
+    QMessageBox::information(this, "Success", "Decompression done successfully!");
+    ui->stackedWidget->setCurrentWidget(ui->StatsTab);
+
+    delete currentDecompressor;
+    currentDecompressor = nullptr;
+}

@@ -17,10 +17,11 @@ class OutFileHandler {
 public:
     OutFileHandler();
     OutFileHandler(const std::string& path);
+    void writeOrgFile(const vector<unsigned char>& Data);
     void writeCmpFile(const std::vector<unsigned char>& orgBytes,
                       std::vector<std::pair<unsigned char, int>>& lenghts,
                       std::unordered_map<unsigned char, std::string>& codes);
-    void setPath(const std::string& path);
+    void setPath(const std::string& path ,bool forCmp =true) ;
 };
 
 #endif // OUTFILEHANDLER_H

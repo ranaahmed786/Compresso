@@ -112,6 +112,15 @@
         <height>91</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
       <property name="text">
        <string> Compress</string>
       </property>
@@ -130,6 +139,12 @@
         <height>91</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
@@ -147,23 +162,23 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>220</x>
         <y>50</y>
-        <width>511</width>
+        <width>551</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Light</family>
+        <family>Copperplate Gothic Bold</family>
         <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>Select   a   file   to   Compress</string>
+       <string>Select   a   folder   to   Compress</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="fileBtn">
+     <widget class="QPushButton" name="folderBtn">
       <property name="geometry">
        <rect>
         <x>130</x>
@@ -196,6 +211,7 @@
       <property name="font">
        <font>
         <pointsize>12</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="cursor">
@@ -241,7 +257,7 @@
        <bool>true</bool>
       </property>
       <property name="placeholderText">
-       <string>File Path</string>
+       <string>Folder Path</string>
       </property>
      </widget>
      <widget class="QProgressBar" name="progressBar">
@@ -258,30 +274,33 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="CompStatsTab">
+    <widget class="QWidget" name="StatsTab">
      <property name="font">
       <font>
        <family>Segoe UI</family>
        <pointsize>36</pointsize>
       </font>
      </property>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="StatsHeader">
       <property name="geometry">
        <rect>
-        <x>300</x>
+        <x>280</x>
         <y>40</y>
-        <width>371</width>
+        <width>401</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Light</family>
+        <family>Copperplate Gothic Bold</family>
         <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
        <string>Compression Summary</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
      <widget class="QFrame" name="stat4">
@@ -477,6 +496,7 @@
        <font>
         <family>Segoe UI</family>
         <pointsize>9</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="cursor">
@@ -503,6 +523,7 @@
        <font>
         <family>Segoe UI</family>
         <pointsize>9</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="cursor">
@@ -553,7 +574,7 @@
         <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_15">
+      <widget class="QLabel" name="spaceLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -698,6 +719,12 @@
      </widget>
     </widget>
     <widget class="QWidget" name="DecompTab">
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
@@ -711,6 +738,7 @@
        <font>
         <family>Copperplate Gothic Light</family>
         <pointsize>18</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -720,11 +748,14 @@
      <widget class="QLineEdit" name="filePathbox_2">
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>190</y>
-        <width>341</width>
+        <x>290</x>
+        <y>200</y>
+        <width>481</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="text">
+       <string>Folder Path</string>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -733,17 +764,17 @@
        <string>File Path</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="fileBtn_2">
+     <widget class="QPushButton" name="folderBtn_2">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>190</y>
-        <width>121</width>
+        <x>130</x>
+        <y>200</y>
+        <width>161</width>
         <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string> Select file</string>
+       <string> Select folder</string>
       </property>
       <property name="icon">
        <iconset>
@@ -754,10 +785,10 @@
      <widget class="QProgressBar" name="dCompressbar">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>320</y>
-        <width>671</width>
-        <height>31</height>
+        <x>170</x>
+        <y>330</y>
+        <width>591</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="value">
@@ -773,8 +804,19 @@
         <height>71</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
-       <string>Decompress</string>
+       <string> Decompress</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/maximize-solid.svg</normalon>
+       </iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="homeBtn">
