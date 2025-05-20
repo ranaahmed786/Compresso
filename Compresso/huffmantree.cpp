@@ -1,6 +1,6 @@
 #include "huffmantree.h"
-HuffmenTree::HuffmenTree() :root(nullptr) {}
-void HuffmenTree::deleteTree(Node* node) {
+HuffmanTree::HuffmanTree() :root(nullptr) {}
+void HuffmanTree::deleteTree(Node* node) {
     if (node) {
         deleteTree(node->left);
         deleteTree(node->right);
@@ -9,14 +9,14 @@ void HuffmenTree::deleteTree(Node* node) {
 }
 
 // Public destructor
-HuffmenTree::~HuffmenTree() {
+HuffmanTree::~HuffmanTree() {
     deleteTree(root);
     root = nullptr;
 }
-void HuffmenTree::makeTree(const unordered_map<unsigned char, int>& freqMap) {
+void HuffmanTree::makeTree(const unordered_map<unsigned char, int>& freqMap) {
     struct Compare {
         bool operator()(Node* a, Node* b) {
-            return a->freq > b->freq; // Min heap based on frequency
+            return a->freq > b->freq;
         }
     };
 
@@ -34,7 +34,7 @@ void HuffmenTree::makeTree(const unordered_map<unsigned char, int>& freqMap) {
     root = pq.top();
 }
 
-void HuffmenTree::generateCodes(Node* node, string currCode, unordered_map<unsigned char, string>& codes) {
+void HuffmanTree::generateCodes(Node* node, string currCode, unordered_map<unsigned char, string>& codes) {
     if (node == nullptr) return;
     else if (node->left == nullptr && node->right == nullptr) {
         codes[node->data] = currCode;
@@ -44,10 +44,10 @@ void HuffmenTree::generateCodes(Node* node, string currCode, unordered_map<unsig
         generateCodes(node->right, currCode + "1", codes);
     }
 }
-void HuffmenTree::getHuffCodes(unordered_map<unsigned char, string>& codes) {
+void HuffmanTree::getHuffCodes(unordered_map<unsigned char, string>& codes) {
     generateCodes(root, "", codes);
 }
-void HuffmenTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes) {
+void HuffmanTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes) {
     generateCodes(root, "", codes);
     for (const auto& each : codes) {
         codeLenghts.emplace_back(each.first, each.second.length());
@@ -64,7 +64,7 @@ void HuffmenTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLe
     codes.clear();
     this->getHuffCanonicalCodes(codeLenghts,codes,true);
 }
-void HuffmenTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes ,bool codesLengthsSorted){
+void HuffmanTree::getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes ,bool codesLengthsSorted){
     if(codesLengthsSorted){
         int currentCode = 0;  // Start at 0
         int currentLength = 0; // Track the current code length

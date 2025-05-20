@@ -24,17 +24,16 @@ vector<unsigned char>  InFileHandler::readCmpFile(){
         vector<unsigned char> symbols(numofsymb);
         vector<unsigned char> lengths(numofsymb);
 
-        // Read symbols (numofsymb bytes)
         if (!inFile.read(reinterpret_cast<char*>(symbols.data()), numofsymb)) {
             throw runtime_error("Error reading symbols in file header of: " + inFilePath);
         }
 
-        //  Read code lengths (numofsymb bytes )
+
         if (!inFile.read(reinterpret_cast<char*>(lengths.data()), numofsymb)) {
             throw runtime_error("Error reading code lengths in file header of: " + inFilePath);
         }
 
-        //Read total number of encoded bits (4 bytes)
+
         if (!inFile.read(reinterpret_cast<char*>(&totalBits), sizeof(totalBits))) {
             throw runtime_error("Error reading number of data bits in file header of: " + inFilePath);
         }
@@ -45,10 +44,9 @@ vector<unsigned char>  InFileHandler::readCmpFile(){
         for (uint32_t i = 0; i < numofsymb; ++i)
              SymbolsNLengths.push_back({symbols[i], static_cast<int>(lengths[i])});
 
-        HuffmenTree Tree;
+        HuffmanTree Tree;
         Tree.getHuffCanonicalCodes(SymbolsNLengths, CanonicalCodes, true);
 
-        //reversing the mapping for the Canonical codes
         unordered_map<string,unsigned char> CodeToSymbol;
         for (const auto& each:CanonicalCodes)
             CodeToSymbol[each.second]=each.first;
@@ -64,7 +62,7 @@ vector<unsigned char>  InFileHandler::readCmpFile(){
             auto it = CodeToSymbol.find(currentBits);
             if (it != CodeToSymbol.end()) {
                 decodedBytes.push_back(it->second);
-                currentBits.clear(); // Reset for next symbol
+                currentBits.clear();
             }
         }
         inFile.close();

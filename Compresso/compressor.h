@@ -19,7 +19,7 @@ class Compressor:public QObject
     int FilesProcessed;
     InFileHandler inHandler;
     OutFileHandler outHandler;
-    HuffmenTree tree;
+    HuffmanTree tree;
     fs::path rootFolder;
     fs::path compressedFolder;
     size_t originalFSize;

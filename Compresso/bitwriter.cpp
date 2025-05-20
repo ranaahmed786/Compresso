@@ -2,17 +2,17 @@
 BitWriter::BitWriter(ofstream& outputStream) : out(outputStream), buffer(0), bitCount(0) {}
 
 BitWriter::~BitWriter() {
-    flush(); // Auto-flush remaining bits when BitWriter goes out of scope
+    flush();
 }
 
 void BitWriter::writeBit(bool bit) {
-    buffer <<= 1;           // Make space for the next bit
+    buffer <<= 1;
     if (bit) {
-        buffer |= 1;        // Set the least significant bit if bit is 1
+        buffer |= 1;
     }
     bitCount++;
     if (bitCount == 8) {
-        out.put(buffer);    // Write full byte to output
+        out.put(buffer);
         bitCount = 0;
         buffer = 0;
     }
@@ -26,7 +26,7 @@ void BitWriter::writeBits(const string& bits) {
 
 void BitWriter::flush() {
     if (bitCount > 0) {
-        buffer <<= (8 - bitCount); // Shift remaining bits to the left
+        buffer <<= (8 - bitCount);
         out.put(buffer);
         buffer = 0;
         bitCount = 0;

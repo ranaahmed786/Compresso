@@ -48,7 +48,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="homeTab">
      <property name="font">
@@ -62,16 +62,16 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>30</y>
-        <width>311</width>
+        <x>280</x>
+        <y>20</y>
+        <width>351</width>
         <height>71</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Bold</family>
-        <pointsize>22</pointsize>
+        <family>Bauhaus 93</family>
+        <pointsize>36</pointsize>
        </font>
       </property>
       <property name="text">
@@ -92,8 +92,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Light</family>
-        <pointsize>11</pointsize>
+        <family>High Tower Text</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -162,20 +162,21 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>220</x>
-        <y>50</y>
-        <width>551</width>
+        <x>250</x>
+        <y>60</y>
+        <width>501</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Bold</family>
-        <pointsize>18</pointsize>
+        <family>Britannic Bold</family>
+        <pointsize>20</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>Select   a   folder   to   Compress</string>
+       <string>Select   A   Folder   To   Compress</string>
       </property>
      </widget>
      <widget class="QPushButton" name="folderBtn">
@@ -292,8 +293,9 @@
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Bold</family>
-        <pointsize>18</pointsize>
+        <family>Britannic Bold</family>
+        <pointsize>20</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -728,21 +730,21 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>230</x>
-        <y>50</y>
-        <width>531</width>
+        <x>240</x>
+        <y>60</y>
+        <width>521</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Copperplate Gothic Light</family>
-        <pointsize>18</pointsize>
+        <family>Britannic Bold</family>
+        <pointsize>20</pointsize>
         <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>Select   a   file   to  Decompress</string>
+       <string>Select   A   Folder  to  Decompress</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="filePathbox_2">

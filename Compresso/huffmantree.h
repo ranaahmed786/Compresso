@@ -5,7 +5,7 @@
 #include<unordered_map>
 #include<algorithm>
 using namespace std;
-class HuffmenTree
+class HuffmanTree
 {
     struct Node {
         unsigned char data;
@@ -22,8 +22,8 @@ class HuffmenTree
     void generateCodes(Node* node, string currCode, unordered_map<unsigned char, string>& codes);
 
 public:
-    HuffmenTree();
-    ~HuffmenTree();
+    HuffmanTree();
+    ~HuffmanTree();
     void deleteTree(Node* node);
     void makeTree(const unordered_map<unsigned char, int>& info);
     void getHuffCanonicalCodes(vector<pair<unsigned char, int>>& codeLenghts, unordered_map<unsigned char, string>& codes);

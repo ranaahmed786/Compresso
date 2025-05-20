@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->progressBar->hide();
     ui->dCompressbar->hide();
 
-    // Connect compression watcher finished signal
+
     connect(&compressionWatcher, &QFutureWatcher<void>::finished,
             this, &MainWindow::compressionFinished);
 }
@@ -51,7 +51,7 @@ void MainWindow::on_folderBtn_clicked() {
     ui->filePathbox->setText(path);
 }
 QString MainWindow::formatSize(double bytes) {
-    if (bytes < 1.0) { // Less than 1 MB
+    if (bytes < 1.0) {
         double sizeKB = bytes * 1024.0;
         return QString::number(sizeKB, 'f', 2) + " KBs";
     }
@@ -65,20 +65,20 @@ void MainWindow::on_CompressFileBtn_clicked() {
             throw std::runtime_error("Kindly select a valid folder for compression");
         }
 
-        // Show progress bar and reset
+
         ui->CompressFileBtn->hide();
         ui->progressBar->show();
         ui->progressBar->setValue(0);
 
-        // Prepare compressor
+
         currentCompressor = new Compressor(qPath.toStdString());
 
-        // Connect progress signal
+
         connect(currentCompressor, &Compressor::progressUpdated,this, &MainWindow::updateCmpProgress, Qt::QueuedConnection);
 
         connect(&compressionWatcher,&QFutureWatcher<void>::finished,this,&MainWindow::compressionFinished);
 
-        // Run in background
+
         compressionWatcher.setFuture(QtConcurrent::run([this]() {
             try {
                 currentCompressor->compressFolder();
@@ -94,39 +94,37 @@ void MainWindow::on_CompressFileBtn_clicked() {
         ui->progressBar->hide();
     }
 }
-// Modified compression finished handler
+
 void MainWindow::compressionFinished() {
     if (!currentCompressor) return;
 
-    // Hide progress bar
+
     ui->progressBar->hide();
     ui->CompressFileBtn->show();
     // Update stats
     Compressor &c = *currentCompressor;
     lastCompressedPath = QString::fromStdString(c.compressedFolder.string());
 
-    // Update dashboard with proper size formatting
-        // Convert sizes to MB first
+
         double sizeOMB = static_cast<double>(c.originalFSize) / (1024.0 * 1024.0);
         double sizeCMB = static_cast<double>(c.compressedFSize) / (1024.0 * 1024.0);
 
-        // Original Size (auto-format)
+
         ui->orgFileSizeD->setText(formatSize(sizeOMB));
 
-        // Compressed Size (auto-format)
+
         ui->cmpFileSizeD->setText(formatSize(sizeCMB));
 
-        // Other metrics
+
         ui->filesProcessed->setText(QString::number(c.FilesProcessed));
 
-        // Handle division by zero for ratio calculation
+
         double ratio = (sizeOMB > 0) ? (1 - (sizeCMB / sizeOMB)) * 100 : 0.0;
         ui->cmpRatioD->setText(QString::number(ratio, 'f', 1) + " %");
 
-        // Time and space saved
         ui->timeTakenD->setText(QString::number(static_cast<double>(c.TimeTaken) / 1000.0, 'f', 2) + " s");
         ui->spaceSavedD->setText(formatSize(sizeOMB - sizeCMB));
-    // Show success message and switch to stats page
+
     QMessageBox::information(this, "Success", "Compression done successfully!");
     ui->stackedWidget->setCurrentWidget(ui->StatsTab);
 
@@ -136,7 +134,7 @@ void MainWindow::compressionFinished() {
 void MainWindow::updateCmpProgress(int value)
 {
     ui->progressBar->setValue(value);
-    QCoreApplication::processEvents(); // Optional: Keeps UI responsive
+    QCoreApplication::processEvents();
 }
 
 void MainWindow::updateDecmpProgress(int value){
@@ -160,11 +158,11 @@ void MainWindow::on_DecompressFileBtn_clicked()
     try {
         QString Path = ui->filePathbox_2->text();
         string folderPath =Path.toStdString();
-        int Pos = folderPath.find_last_of('(');
+        const string suffix = "(Compressed)";
         if (Path.isEmpty()) {
             throw runtime_error("Kindly select a valid folder for decompression");
         }
-        else if(Pos == string::npos){
+        else if(folderPath.length() < suffix.length() || folderPath.substr(folderPath.length() - suffix.length()) != suffix){
             throw std::runtime_error("Kindly select a folder compressed by Compresso."+Path.toStdString()+" is not a compresso compressed folder.");
         }
         else{
