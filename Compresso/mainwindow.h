@@ -44,7 +44,8 @@ private slots:
     void decompressionFinished();
     void on_showInFolderBtn_clicked();
     void on_DecompressFileBtn_clicked();
-
+    void handleCompressionFailure(const QString &error);
+    void handleDecompressionFailure(const QString &error);
 private:
     Ui::MainWindow *ui;
     QString lastCompressedPath;

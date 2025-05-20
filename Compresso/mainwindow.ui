@@ -755,13 +755,13 @@
        </rect>
       </property>
       <property name="text">
-       <string>Folder Path</string>
+       <string/>
       </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
       <property name="placeholderText">
-       <string>File Path</string>
+       <string>Folder Path</string>
       </property>
      </widget>
      <widget class="QPushButton" name="folderBtn_2">

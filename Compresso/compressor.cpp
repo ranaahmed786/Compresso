@@ -5,34 +5,34 @@ Compressor::Compressor(const string& path) :rootFolder(path),TimeTaken(0),FilesP
 }
 void Compressor::compressFolder() {
 
-    if(!fs::is_directory(rootFolder)) {
-        throw runtime_error("The provided path is not a valid directory for compression(probably a zip folder)");
-        return;
-    }
-    else {
-        QElapsedTimer timer;
-        timer.start();
-        fs::create_directory(compressedFolder);
-        size_t totalFiles = std::distance(fs::recursive_directory_iterator(rootFolder),fs::recursive_directory_iterator());
-        fs::path fileSavePath;
-        fs::path fileRelativePath;
-        size_t processed = 0;
-        for (const auto& each : fs::recursive_directory_iterator(rootFolder)) {
-            if (each.is_regular_file()) {
-                FilesProcessed++;
-                fileRelativePath = fs::relative(each.path(), rootFolder);
-                compressFile(each.path().string(), (compressedFolder / fileRelativePath).string());
-            }
-            else if (each.is_directory()) {
-                fs::path newDir = compressedFolder / fs::relative(each.path(), rootFolder);
-                fs::create_directory(newDir);
-            }
-            processed++;
-            int progressPercent = static_cast<int>((processed * 100) / totalFiles);
-            emit progressUpdated(progressPercent);
+        if(!fs::is_directory(rootFolder)) {
+            throw runtime_error("The provided path is not a valid directory for compression(probably a zip folder)");
+            return;
         }
-        TimeTaken=timer.elapsed();
-    }
+        else {
+            QElapsedTimer timer;
+            timer.start();
+            fs::create_directory(compressedFolder);
+            size_t totalFiles = std::distance(fs::recursive_directory_iterator(rootFolder),fs::recursive_directory_iterator());
+            fs::path fileSavePath;
+            fs::path fileRelativePath;
+            size_t processed = 0;
+            for (const auto& each : fs::recursive_directory_iterator(rootFolder)) {
+                if (each.is_regular_file()) {
+                    FilesProcessed++;
+                    fileRelativePath = fs::relative(each.path(), rootFolder);
+                    compressFile(each.path().string(), (compressedFolder / fileRelativePath).string());
+                }
+                else if (each.is_directory()) {
+                    fs::path newDir = compressedFolder / fs::relative(each.path(), rootFolder);
+                    fs::create_directory(newDir);
+                }
+                processed++;
+                int progressPercent = static_cast<int>((processed * 100) / totalFiles);
+                emit progressUpdated(progressPercent);
+            }
+            TimeTaken=timer.elapsed();
+        }
 }
 void Compressor::compressFile(const string& filePath, const string& fileSavePath) {
     inHandler.setPath(filePath);

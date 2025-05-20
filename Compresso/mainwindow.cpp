@@ -74,12 +74,19 @@ void MainWindow::on_CompressFileBtn_clicked() {
         currentCompressor = new Compressor(qPath.toStdString());
 
         // Connect progress signal
-        connect(currentCompressor, &Compressor::progressUpdated,
-                this, &MainWindow::updateCmpProgress, Qt::QueuedConnection);
+        connect(currentCompressor, &Compressor::progressUpdated,this, &MainWindow::updateCmpProgress, Qt::QueuedConnection);
+
+        connect(&compressionWatcher,&QFutureWatcher<void>::finished,this,&MainWindow::compressionFinished);
 
         // Run in background
         compressionWatcher.setFuture(QtConcurrent::run([this]() {
-            currentCompressor->compressFolder();
+            try {
+                currentCompressor->compressFolder();
+            } catch (const std::exception &e) {
+                QMetaObject::invokeMethod(this, [=]() {
+                    handleCompressionFailure(e.what());
+                }, Qt::QueuedConnection);
+            }
         }));
 
     } catch (const std::exception &e) {
@@ -141,8 +148,10 @@ void MainWindow::on_homeBtnS_clicked() {
 }
 
 void MainWindow::on_showInFolderBtn_clicked()
-{
-    QDesktopServices::openUrl(QUrl::fromLocalFile(lastCompressedPath));
+{   if(ui->StatsHeader->text() == "Compression Summary")
+        QDesktopServices::openUrl(QUrl::fromLocalFile(lastCompressedPath));
+    else
+        QDesktopServices::openUrl(QUrl::fromLocalFile(lastDecompressedPath));
 }
 
 
@@ -150,27 +159,39 @@ void MainWindow::on_DecompressFileBtn_clicked()
 {
     try {
         QString Path = ui->filePathbox_2->text();
+        string folderPath =Path.toStdString();
+        int Pos = folderPath.find_last_of('(');
         if (Path.isEmpty()) {
-            throw std::runtime_error("Kindly select a valid folder for compression");
+            throw runtime_error("Kindly select a valid folder for decompression");
         }
+        else if(Pos == string::npos){
+            throw std::runtime_error("Kindly select a folder compressed by Compresso."+Path.toStdString()+" is not a compresso compressed folder.");
+        }
+        else{
+            // Show progress bar and reset
+            ui->DecompressFileBtn->hide();
+            ui->dCompressbar->show();
+            ui->dCompressbar->setValue(0);
 
-        // Show progress bar and reset
-        ui->DecompressFileBtn->hide();
-        ui->dCompressbar->show();
-        ui->dCompressbar->setValue(0);
+            // Prepare decompressor
+            currentDecompressor = new Decompressor(Path.toStdString());
 
-        // Prepare decompressor
-        currentDecompressor = new Decompressor(Path.toStdString());
+            // Connect progress signal
+            connect(currentDecompressor, &Decompressor::progressUpdated, this, &MainWindow::updateDecmpProgress, Qt::QueuedConnection);
 
-        // Connect progress signal
-        connect(currentDecompressor, &Decompressor::progressUpdated,
-                this, &MainWindow::updateDecmpProgress, Qt::QueuedConnection);
+            connect(&decompressionWatcher,&QFutureWatcher<void>::finished,this,&MainWindow::decompressionFinished);
 
-        // Run in background
-        decompressionWatcher.setFuture(QtConcurrent::run ([this](){
-            currentDecompressor->decompressFolder();
-        }));
-
+            // Run in background
+            decompressionWatcher.setFuture(QtConcurrent::run([this]() {
+                try {
+                    currentDecompressor->decompressFolder();
+                } catch (const std::exception &e) {
+                    QMetaObject::invokeMethod(this, [=]() {
+                        handleDecompressionFailure(e.what());
+                    }, Qt::QueuedConnection);
+                }
+            }));
+        }
     } catch (const std::exception &e) {
         QMessageBox::critical(this, "An error occurred during decompression", e.what());
         ui->progressBar->hide();
@@ -215,4 +236,24 @@ void MainWindow::decompressionFinished() {
 
     delete currentDecompressor;
     currentDecompressor = nullptr;
+}
+void MainWindow::handleDecompressionFailure(const QString &error){
+    QMetaObject::invokeMethod(this, [=]() {
+        QMessageBox::critical(this, "Decompression Error", error);
+        ui->dCompressbar->hide();
+        ui->DecompressFileBtn->show();
+        ui->stackedWidget->setCurrentWidget(ui->homeTab);
+        delete currentDecompressor;
+        currentDecompressor = nullptr;
+    }, Qt::QueuedConnection);
+}
+void MainWindow::handleCompressionFailure(const QString &error) {
+    QMetaObject::invokeMethod(this, [=]() {
+        QMessageBox::critical(this, "Compression Error", error);
+        ui->progressBar->hide();
+        ui->CompressFileBtn->show();
+        ui->stackedWidget->setCurrentWidget(ui->homeTab);
+        delete currentCompressor;
+        currentCompressor = nullptr;
+    }, Qt::QueuedConnection);
 }
