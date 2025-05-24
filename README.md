@@ -1,161 +1,193 @@
-# 📦 Compresso
+# Compresso
 
-**Compresso** is a modern, cross-platform, folder-based compression and decompression tool built using **Qt Widgets (C++)**. It uses **Canonical Huffman Coding** to efficiently compress files while maintaining directory structure. Designed with end-users in mind, Compresso provides a clean UI, fast multithreaded performance, and strong error handling.
+A modern, cross-platform compression utility for folder-based archival using Canonical Huffman Coding algorithms. Built with Qt Widgets and C++, Compresso provides efficient lossless compression while preserving complete directory structures.
 
----
+## Overview
 
-## 📚 Table of Contents
+Compresso is designed as a specialized folder compression tool that addresses the need for efficient, structure-preserving archival solutions. Unlike traditional archive formats, Compresso applies Canonical Huffman Coding to individual files while maintaining the integrity of nested directory hierarchies.
 
-- [🔍 About the Project](#-about-the-project)
-- [✨ Features](#-features)
-- [🖼️ User Interface](#️-user-interface)
-- [⚙️ How It Works](#️-how-it-works)
-- [🧰 Getting Started](#-getting-started)
-- [🧪 Usage Guide](#-usage-guide)
-- [⚠️ Limitations](#️-limitations)
-- [🎓 Learnings](#-learnings)
-- [📄 License](#-license)
+### Key Advantages
 
----
+- **Individual File Optimization**: Each file is compressed independently using optimized Huffman codes
+- **Structure Preservation**: Complete directory trees are maintained with perfect fidelity
+- **Minimal Overhead**: Efficient binary storage with compact metadata headers
+- **Performance Oriented**: Multithreaded operations with real-time progress tracking
+- **User-Centric Design**: Intuitive interface suitable for both technical and non-technical users
 
-## 🔍 About the Project
+## User Interface
 
-Compresso solves the need for a dedicated, efficient **folder compression utility** with a clean UI and powerful performance.
+The application features a clean, intuitive interface designed for seamless user experience across all platforms.
 
-Unlike generic file compressors (ZIP/RAR), Compresso:
-- Compresses each file **individually** using **Canonical Huffman Codes**
-- Preserves complete folder structure
-- Optimizes binary storage with minimal header overhead
+<div align="center">
 
-Key benefits:
-- 🚀 Multithreaded operations
-- 📊 Real-time progress feedback
-- 🔄 Lossless recovery of original structure
-- 🖥️ Intuitive interface for all users
+| Home Screen | Folder Selection |
+|-------------|------------------|
+| ![Home Screen](https://github.com/user-attachments/assets/99a0edea-2559-42e3-b025-d50f032f8a89) | ![Folder Select](https://github.com/user-attachments/assets/71d0702d-0b33-4603-85da-ac0ba4a172f4) |
 
-Perfect for:
-- Educational projects
-- Custom data archival
-- Filesystem optimization experiments
+| Compression Progress | Completed Operation |
+|---------------------|---------------------|
+| ![Compressing](https://github.com/user-attachments/assets/3f988e5d-0d94-4b44-a131-187e7bc1772d) | ![Decompressed](https://github.com/user-attachments/assets/bca60b5f-765a-4771-bc44-efd62065d887) |
 
----
+</div>
 
-## ✨ Features
+## Features
 
-| Feature | Description |
-|---------|-------------|
-| **📂 Folder Compression** | Preserves nested subfolders and file hierarchy |
-| **🌲 Canonical Huffman Coding** | Optimized, lexicographically sorted codes for efficiency |
-| **⚡ Multithreaded Processing** | Background operations with QtConcurrent (no UI freeze) |
-| **🔢 Bit-Level Encoding** | Space-efficient binary output |
-| **📦 Smart Metadata** | Minimal header overhead |
-| **❌ Error Handling** | Clear dialogs for invalid inputs |
-| **🏷️ Smart Naming** | Auto-appends `(Compressed)`/`(Decompressed)` |
-| **🖥️ Cross-Platform** | Consistent experience on Windows, Linux, macOS |
+### Core Functionality
+- **Folder-Based Compression**: Processes entire directory structures recursively
+- **Canonical Huffman Implementation**: Lexicographically sorted codes for optimal efficiency
+- **Lossless Compression**: Perfect reconstruction of original files and folder hierarchy
+- **Binary Optimization**: Bit-level encoding for maximum space efficiency
 
----
+### Performance & Usability
+- **Multithreaded Processing**: Background operations using QtConcurrent framework
+- **Progress Monitoring**: Real-time feedback during compression/decompression operations
+- **Intelligent Naming**: Automatic suffix handling for output directories
+- **Error Management**: Comprehensive error handling with user-friendly notifications
+- **Cross-Platform Support**: Consistent experience across Windows, Linux, and macOS
 
-## 🖼️ User Interface
+## Technical Implementation
 
-### Home Screen
-![Home Screen](https://github.com/user-attachments/assets/99a0edea-2559-42e3-b025-d50f032f8a89)
-
-### Folder Selection
-![Folder Select](https://github.com/user-attachments/assets/71d0702d-0b33-4603-85da-ac0ba4a172f4)
-
-### Compression Progress
-![Compressing](https://github.com/user-attachments/assets/3f988e5d-0d94-4b44-a131-187e7bc1772d)
-
-### Completed Operation
-![Decompressed](https://github.com/user-attachments/assets/bca60b5f-765a-4771-bc44-efd62065d887)
-
----
-
-## ⚙️ How It Works
-
-### Compression Process
-1. User selects folder via GUI
-2. Files are tokenized and frequency-analyzed
-3. Huffman Tree → Canonical Huffman Codes
-4. Encoded content saved as `.compresso` files
-5. Output in `[OriginalName] (Compressed)` folder
+### Compression Algorithm
+1. **File Analysis**: Tokenization and frequency analysis of input files
+2. **Tree Construction**: Building optimal Huffman trees for each file
+3. **Canonical Conversion**: Transform to canonical Huffman codes for standardization
+4. **Binary Encoding**: Bit-level compression with efficient storage
+5. **Metadata Generation**: Minimal header creation for reconstruction data
 
 ### Decompression Process
-1. User selects `(Compressed)` folder
-2. Rebuilds canonical codebook
-3. Decodes bitstreams to original files
-4. Restores to `[OriginalName] (Decompressed)`
+1. **Metadata Parsing**: Reading compression headers and codebook information
+2. **Tree Reconstruction**: Rebuilding canonical Huffman trees
+3. **Binary Decoding**: Converting compressed bitstreams back to original data
+4. **Structure Recreation**: Restoring complete directory hierarchy
 
----
+## Installation
 
-## 🧰 Getting Started
+### Prerequisites
+- Qt Framework (5.x or 6.x)
+- C++17 compatible compiler
+- CMake or qmake build system
+- Git version control
 
-### Requirements
-- Qt 5/6
-- C++17
-- Qt Creator (recommended)
-- Git
+### Build Process
 
-### Build Instructions
+#### Using Qt Creator
 ```bash
 git clone https://github.com/yourusername/compresso.git
 cd compresso
-# Qt Creator:
-open Compresso.pro
-# OR manual build:
+# Open Compresso.pro in Qt Creator and build
+```
+
+#### Command Line Build
+```bash
+git clone https://github.com/yourusername/compresso.git
+cd compresso
 qmake Compresso.pro
 make
 ```
+
+#### Alternative CMake Build
+```bash
+git clone https://github.com/yourusername/compresso.git
+cd compresso
+mkdir build && cd build
+cmake ..
+make
+```
+
+## Usage
+
+### Compressing Directories
+
+1. Launch the Compresso application
+2. Click "Browse Folder" to select the target directory
+3. Click "Compress" to begin the compression process
+4. Monitor progress through the real-time progress indicator
+5. Locate the output in `[DirectoryName] (Compressed)` folder
+
+### Decompressing Archives
+
+1. Select a directory with the "(Compressed)" suffix
+2. Click "Decompress" to initiate the restoration process
+3. Monitor decompression progress
+4. Access restored files in `[DirectoryName] (Decompressed)` folder
+
+### File Format
+
+Compressed files use the `.compresso` extension and contain:
+- Canonical Huffman codebook metadata
+- Compressed binary data streams
+- Directory structure information
+- File attribute preservation data
+
+## Architecture
+
+### Core Components
+
+**Compression Engine**
+- Huffman tree construction and optimization
+- Canonical code generation algorithms
+- Binary I/O operations with bitstream handling
+
+**User Interface**
+- Qt Widgets-based GUI implementation
+- Asynchronous operation handling with QFutureWatcher
+- Progress tracking and user feedback systems
+
+**File Management**
+- Recursive directory traversal
+- Metadata preservation and restoration
+- Cross-platform file system compatibility
+
+## Limitations
+
+### Current Constraints
+- Folder-only compression (individual files not supported)
+- Proprietary format compatibility (only Compresso-generated archives)
+- No encryption or password protection capabilities
+- Performance considerations for extremely large files due to bit-level operations
+
+### Future Enhancements
+- Individual file compression support
+- Encryption and security features
+- Additional compression algorithms
+- Performance optimizations for large datasets
+
+## Technical Learnings
+
+This project provided extensive experience in:
+
+**Algorithm Implementation**
+- Huffman tree construction and traversal algorithms
+- Canonical Huffman code generation and optimization
+- Binary data manipulation and bitstream processing
+
+**Software Engineering**
+- Asynchronous programming with Qt's concurrent framework
+- Exception-safe multithreaded application design
+- Cross-platform GUI development using Qt Widgets
+
+**Systems Programming**
+- Low-level binary file I/O operations
+- Memory-efficient data structure design
+- File system interaction and metadata handling
+
+## Contributing
+
+Contributions are welcome through standard GitHub workflows:
+
+1. Fork the repository
+2. Create a feature branch
+3. Implement changes with appropriate tests
+4. Submit a pull request with detailed description
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete terms and conditions.
+
+## Contact
+
+For questions, issues, or feature requests, please use the GitHub issue tracker or contact the development team through the repository.
+
 ---
 
-## 🧪 Usage Guide
-
-### 📤 Compress a Folder
-
-1. Launch **Compresso**.
-2. Click **Browse Folder** and select any folder.
-3. Press **Compress**.
-4. Output is saved in `[YourFolder] (Compressed)/`.
-
-### 📥 Decompress a Folder
-
-1. Select a folder ending in `(Compressed)`.
-2. Click **Decompress**.
-3. Original files are restored in `[FolderName] (Decompressed)/`.
-
-### ❗ Important Notes
-
-- Only folders ending in `(Compressed)` are accepted for decompression.
-- Compressed files use the `.compresso` extension.
-- Nested folders are supported and recreated exactly.
-
----
-## ⚠️ Limitations
-
-- 🚫 Only compresses **folders**, not individual files.
-- ⚠️ Cannot decompress folders not generated by **Compresso**.
-- 🔒 No password protection or encryption.
-- 🐢 Large files may take longer due to bit-level operations.
-
----
-
-## 🎓 Learnings
-
-From this project, I learned:
-
-- 🌲 Building and traversing **Huffman Trees**
-- ⚙️ Converting Huffman Trees to **Canonical** format
-- 🧵 Implementing async tasks using `QFutureWatcher` and `QtConcurrent`
-- 💾 Performing **binary file I/O** with bitstream buffering
-- 🖥️ Designing robust GUI applications using **Qt Widgets**
-- ❌ Managing exception-safe multithreaded behavior in background tasks
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.  
-See the [LICENSE](LICENSE) file for details.
-
----
-
+**Compresso** - Efficient folder compression through advanced algorithmic implementation.
