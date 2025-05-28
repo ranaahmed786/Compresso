@@ -26,7 +26,7 @@ The application features a clean, intuitive interface designed for seamless user
 
 | Compression Progress | Completed Operation |
 |---------------------|---------------------|
-| ![Compressing](https://github.com/user-attachments/assets/3f988e5d-0d94-4b44-a131-187e7bc1772d) | ![Decompressed](https://github.com/user-attachments/assets/bca60b5f-765a-4771-bc44-efd62065d887) |
+| ![Compressing](https://github.com/user-attachments/assets/3f988e5d-0d94-4b44-a131-187e7bc1772d) | ![Compressed](https://github.com/user-attachments/assets/08f51539-8c7e-40f8-9724-f294e006226f)|
 
 </div>
 
