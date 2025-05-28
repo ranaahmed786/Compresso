@@ -48,7 +48,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="homeTab">
      <property name="font">
@@ -418,7 +418,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Compressed File Size</string>
+        <string>Compressed Size</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -478,7 +478,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Orignal File Size</string>
+        <string>Orignal Size</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
